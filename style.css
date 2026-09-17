@@ -58,16 +58,20 @@ body,html{
  grid-template-rows: repeat(auto-fill,minmax(50px,1fr));
 
 
+
 }
 .box{
   
     border: 1px solid var(--border-primary-color);
+    border-radius: 10px;
 }
 .white{
     background-color: var(--border-primary-color);
+   
 }
 .red{
     background-color: red;
+  
 }
 .model{
     height:100vh;
@@ -80,10 +84,11 @@ body,html{
     display: flex;
     justify-content: center;    
     align-items: center;  
-    /* display: none; */
+  
 }
-.model button{
+ button{
     text-align: center;
+    padding: var(--space-ms) var(--space-md);
     gap: var(--space-md);
     width: 100%;
     margin: auto;
@@ -100,19 +105,34 @@ body,html{
 .gameover{
   
     display: none;
+        width: 300px;
+        height: 200px;
+        margin: auto;
+        align-items: center;
+        position: relative;
+        top: 50%;
+
 }
 .restart{
   padding: var(--space-ms) var(--space-md);
     background-color: var(--border-primary-color);
     border-radius: var(--border-radius-sm);
-    text-align: center;
-    border:none
+    width: 100%;
+    margin: auto;
 }
 
+button:hover{
+    background-color: rgba(255, 0, 0, 0.662);
+    color: white;
+    transition: 0.5s;
+}
+
+
 h1{
-    font-size: 50px;
+    font-size: 60px;
     color: rgba(255, 0, 0, 0.696);
     text-align: center;
+    align-items: center;
 
     
 

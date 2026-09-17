@@ -3,10 +3,17 @@ const startBtn=document.querySelector(".start")
 const startGame=document.querySelector(".startgame")
 const model=document.querySelector(".model")    
 const gameOver=document.querySelector(".gameover")
-const score=document.querySelector(".Score")
+const score=document.querySelector("#Score")
+const highscore=document.querySelector("#Highscore")
+const time=document.querySelector("#Time")
 
-
-
+let scoreValue=0
+let highscoreValue=localStorage.getItem("highscore") || 0
+highscore.textContent=highscoreValue
+let timeValue='00:00'
+time.textContent=timeValue
+let minutes=0
+let seconds=0
 
 
 
@@ -28,18 +35,19 @@ const food={
 let direction="right";
 let intervalId=null;
 
-
+// Making box
 for(let row=0;row < rows;row++)
     for(let col=0;col < cols;col++){
 
     let box=document.createElement("div")
     box.classList.add("box")
     block.appendChild(box)
-    // blocks.push(block)
       blocks[`${row}-${col}`] = box;
-    box.textContent=`${row}-${col}`
+    
     
 }
+
+// food section
 
 function render() {
         let head =null
@@ -62,6 +70,13 @@ function render() {
         food.mx=Math.floor(Math.random()*rows)
         food.my=Math.floor(Math.random()*cols)
         snake.unshift(head)
+        scoreValue+=10;
+        score.textContent=scoreValue;
+        if(scoreValue>highscoreValue){
+            highscoreValue=scoreValue
+            localStorage.setItem("highscore",highscoreValue)
+            highscore.textContent=highscoreValue
+        }
        
     }
 
@@ -69,6 +84,11 @@ function render() {
         model.style.display="block"
         startGame.style.display="none"
     gameOver.style.display="block"
+    timeValue='00:00'
+    time.textContent=timeValue
+   
+    clearInterval(timeInterval)
+   
     clearInterval(intervalId)
 };
 
@@ -86,25 +106,69 @@ function render() {
 );
 }
 render()
-
+//Game start section
 startBtn.addEventListener("click", () => {
     intervalId=setInterval(() => {
         render()
     }, 200);
     model.style.display="none"
-})
+   
+   
 
+    timeInterval=setInterval(() => {
+        let [minutes, seconds] = timeValue.split(':').map(Number);
+        seconds++;
+        if(seconds == 60) {
+            seconds = 0;
+            minutes++;
+        }
+        
+       
+        timeValue = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        time.textContent = timeValue;
+    }, 1000);
+    
+  
+    
+});
+
+// Game over section
 gameOver.addEventListener("click", () => {
+       
      intervalId=setInterval(() => {
+        
         render()
     }, 200);
+
+
+      timeInterval=setInterval(() => {
+        let [minutes, seconds] = timeValue.split(':').map(Number);
+        seconds++;
+        if(seconds == 60) {
+            seconds = 0;
+            minutes++;
+        }
+        
+       
+        timeValue = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        time.textContent = timeValue;
+    }, 1000);
+  
+    time.textContent = timeValue;
     model.style.display="none"
+    scoreValue=0
+    score.textContent=scoreValue;
     snake.length=0
+   
     snake.push({x: 1, y: 3})
     direction="right"
+    
 
-})
+ 
+}, 1000);
+   
 
+// Direction section
 addEventListener("keydown", (e) => {
    if (e.key === "ArrowLeft" && direction !== "right") {
     direction = "left";
